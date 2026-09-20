@@ -4,8 +4,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-
-	"github.com/pelletier/go-toml/v2"
 )
 
 func main() {
@@ -13,14 +11,14 @@ func main() {
 		panic(fmt.Sprintf("usage: %s <config.toml>", os.Args[0]))
 	}
 
-	configFile, err := os.Open(os.Args[1])
+	cfgFile, err := os.Open(os.Args[1])
 	if err != nil {
 		panic(err)
 	}
-	defer configFile.Close()
+	defer cfgFile.Close()
 
-	var cfg Config
-	if err := toml.NewDecoder(configFile).Decode(&cfg); err != nil {
+	cfg, err := parseConfig(cfgFile)
+	if err != nil {
 		panic(err)
 	}
 
