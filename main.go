@@ -1,35 +1,27 @@
 package main
 
 import (
-	"cmp"
 	"context"
-	"encoding/json/v2"
 	"fmt"
 	"os"
+
+	"github.com/pelletier/go-toml/v2"
 )
 
 func main() {
-	if len(os.Args) > 2 {
-		fmt.Fprintf(os.Stderr, "usage: %s [filepath]\n", os.Args[0])
-		os.Exit(1)
+	if len(os.Args) != 2 {
+		panic(fmt.Sprintf("usage: %s <config.toml>", os.Args[0]))
 	}
 
-	filepath := ""
-	if len(os.Args) > 1 {
-		filepath = os.Args[1]
-	}
-	filepath = cmp.Or(filepath, "./config.json")
-
-	configFile, err := os.Open(filepath)
+	configFile, err := os.Open(os.Args[1])
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
+	defer configFile.Close()
 
 	var cfg Config
-
-	err = json.UnmarshalRead(configFile, &cfg)
-	if err != nil {
-		panic(err.Error())
+	if err := toml.NewDecoder(configFile).Decode(&cfg); err != nil {
+		panic(err)
 	}
 
 	ctx := context.Background()

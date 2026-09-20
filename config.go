@@ -1,13 +1,13 @@
 package main
 
 type Website struct {
-	Domain string `json:"domain"`
-	HTTP1  bool   `json:"http1"`
-	HTTP2  bool   `json:"http2"`
-	HTTP3  bool   `json:"http3"`
-	Port   uint16 `json:"port"`
+	Domain string `toml:"domain"`
+	HTTP1  bool   `toml:"http1"`
+	HTTP2  bool   `toml:"http2"`
+	HTTP3  bool   `toml:"http3"`
+	Port   uint16 `toml:"port"`
 }
 
 type Config struct {
-	Websites []Website `json:"websites"`
+	Websites []Website `toml:"websites"`
 }
