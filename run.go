@@ -61,7 +61,11 @@ func run(ctx context.Context, cfg Config) error {
 	}
 
 	app := &application{
-		httpClient:    &http.Client{Transport: httpTransport},
+		httpClient: &http.Client{
+			Transport: httpTransport,
+			CheckRedirect: func(req *http.Request, via []*http.Request) error {
+				return http.ErrUseLastResponse
+			}},
 		hostToWebsite: hostToWebsite,
 	}
 
