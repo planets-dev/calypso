@@ -52,6 +52,7 @@ func (app *application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "bad request", http.StatusBadRequest)
 		return
 	}
+	proxyReq.Host = req.Host
 	proxyReq.Header = req.Header.Clone()
 	for _, header := range hopHeaders {
 		proxyReq.Header.Del(header)
