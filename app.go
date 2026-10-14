@@ -52,7 +52,8 @@ func (app *application) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		http.Error(w, "bad request", http.StatusBadRequest)
 		return
 	}
-	proxyReq.Host = req.Host
+	proxyReq.Host = req.Host // this is crazy, this line made s3 work
+	proxyReq.ContentLength = req.ContentLength
 	proxyReq.Header = req.Header.Clone()
 	for _, header := range hopHeaders {
 		proxyReq.Header.Del(header)
